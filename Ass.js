@@ -17,6 +17,14 @@ function requestHandler(req, res){
     if(req.url === '/'){
         getWeb(req, res)
     }
+
+    if(req.url.endsWith('.html') && req.method === 'GET'){
+        try{
+
+        }catch(err){
+
+        }
+    }
 }
 
 
@@ -35,4 +43,8 @@ function getWeb(req, res){
     res.setHeader('content-type', 'text/html')
     res.writeHead(200)
     res.end(fs.readFileSync(indexPath))
+}
+
+function getRandom(req, res){
+    
 }
