@@ -29,6 +29,8 @@ server.listen(PORT, HOSTNAME, () => {
 
 
 //functions to handle stuffs
+
+//This function reads the index.html file
 function getWeb(req, res){
     res.setHeader('content-type', 'text/html')
     res.writeHead(200)
