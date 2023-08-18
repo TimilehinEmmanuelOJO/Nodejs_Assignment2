@@ -2,6 +2,7 @@ const http = require("http")
 const HOSTNAME = 'localhost'
 const PORT = 3001
 const path = require('path')
+const fs = require('fs')
 
 
 //joined the path for the html file
@@ -20,9 +21,9 @@ function requestHandler(req, res){
 
     if(req.url.endsWith('.html') && req.method === 'GET'){
         try{
-
+            getRandomWeb(req, res)
         }catch(err){
-
+            getError(req, res)
         }
     }
 }
@@ -45,6 +46,17 @@ function getWeb(req, res){
     res.end(fs.readFileSync(indexPath))
 }
 
-function getRandom(req, res){
-    
+function getRandomWeb(req, res){
+    const file = req.url.split('/')[1]
+    const actualPath = path.join(__dirname, file)
+    const web =fs.readFileSync(actualPath)
+    res.setHeader('content-type', 'text.html')
+    res.writeHead(200)
+    res.end(web)
+}
+
+function getError (req, res){
+    res.setHeader('content-type', 'text/html')
+    res.writeHead(404)
+    res.end(fs.readFileSync(errPath))
 }
