@@ -1,4 +1,4 @@
-# Nodejs_Assignment2
+# Web and API assignment
 
 NodeJS Assignment
 Servers and APIs
