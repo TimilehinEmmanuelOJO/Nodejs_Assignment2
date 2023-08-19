@@ -1,3 +1,3 @@
-[
-    {"name":"rice", "Price":"1500", "Size":"large", "Id":"34"}
-]
+[{"name":"rice","Price":"1500","Size":"large","Id":"34"},
+{"name":"beans","Price":"5300","Size":"large","id":"399"},
+{"name":"fufu","Price":"300","Size":"Small","id":"154"}]
