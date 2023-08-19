@@ -14,7 +14,7 @@ function requestHandler(req, res){
     if(req.url === '/items' && req.method === 'POST'){
         createItem(req, res)
     }
-    if(req.url === '/items' && req.method === 'GET'){
+    if(req.url === "/items" && req.method === 'GET'){
         getAllItems(req, res)
     }
 }
@@ -58,6 +58,17 @@ req.on('end', () => {
        res.end(JSON.stringify(itemsToPost)) 
     })
 })
+}
+
+
+//Function to get all items
+function getAllItems(req, res){
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+        if (err){
+            serverErr()
+        }
+        res.end(data)
+    })
 }
 
 
