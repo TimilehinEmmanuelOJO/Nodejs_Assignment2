@@ -17,6 +17,16 @@ function requestHandler(req, res){
     if(req.url === "/items" && req.method === 'GET'){
         getAllItems(req, res)
     }
+    if(req.url.startsWith === '/items/' && req.method === 'GET'){
+        oneItem(req, res)
+    }
+    if (req.url.startsWith("/items/") && req.method === "PATCH") {
+        updateItem(req, res);
+      }
+    
+      if (req.url.startsWith("/items/") && req.method === "DELETE") {
+        deleteItem(req, res);
+      }
 }
 
 
@@ -72,8 +82,84 @@ function getAllItems(req, res){
 }
 
 
+//Get One Item
+function oneItem(req, res){
+    const id = req.url.split('/')[2]
+    const items = fs.readFileSync(filepath)
+    const itemsArrayOfObject = JSON.parse(item)
+
+    const itemIndex = itemsArrayOfObject.findIndex((item)=>{
+        return item.id === id
+    })
+
+    if(itemIndex === -1) {
+        clientErr()
+    }
+    res.end(JSON.stringify(itemsArrayOfObject[itemIndex]))
+}
 
 
+//Update an Item
+function updateItem(req, res) {
+    const id = req.url.split("/")[2];
+  
+    const items = fs.readFileSync(filepath);
+    const itemsArrayOfObj = JSON.parse(items);
+  
+    const body = [];
+    req.on("data", (chunk) => {
+      body.push(chunk);
+    });
+  
+    req.on("end", () => {
+      const parsedBody = Buffer.concat(body).toString();
+      const update = JSON.parse(parsedBody);
+  
+      const itemIndex = itemsArrayOfObj.findIndex((item) => {
+        return item.id === id;
+      });
+  
+      if (itemIndex == -1) {
+        res.end(`item not found`);
+      }
+  
+      itemsArrayOfObj[itemIndex] = { ...itemsArrayOfObj[itemIndex], ...update };
+  
+      fs.writeFile(filepath, JSON.stringify(itemsArrayOfObj), (err) => {
+        if (err) {
+          serverErr()
+        }
+        res.end(JSON.stringify(itemsArrayOfObj[itemIndex]));
+      });
+    });
+  }
+  
+  //========================TO DELETE AN ITEM==============
+  function deleteItem(req, res) {
+    const id = req.url.split("/")[2];
+  
+    const items = fs.readFileSync(filepath);
+    const itemsArrayOfObj = JSON.parse(items);
+  
+    const itemIndex = itemsArrayOfObj.findIndex((item) => {
+      return item.id === id;
+    });
+  
+    if (itemIndex == -1) {
+      res.end(`item not found`);
+    }
+  
+    itemsArrayOfObj.splice(itemIndex, 1);
+  
+    fs.writeFile(filepath, JSON.stringify(itemsArrayOfObj), (err) => {
+      if (err) {
+        serverErr()
+      }
+  
+      res.end(`item successfully deleted`);
+    });
+  }
+  
 
 //Use this to handle errors
 
